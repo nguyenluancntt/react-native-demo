@@ -1,21 +1,25 @@
 import React, { Component } from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
+import AlbumDetail from './AlbumDetail';
 
-// const AlbumList = () =>{
-
-// };
 class AlbumList extends Component{
+    state = { albums: []};
     componentWillMount() {
         console.log('componentWillMount in Albums');
         fetch('https://rallycoding.herokuapp.com/api/music_albums')
         .then((res) => res.json())
-        .then((resData) => console.log(resData));
+        .then((resData) => this.setState({albums: resData}));
     }
-
+    renderAlbum(){
+        return this.state.albums.map(item => 
+        <AlbumDetail key={item.title} album={item} />
+    );
+    }
     render (){
+        console.log(this.state.albums)
         return (
             <View>
-                <Text>album list !!!!</Text>
+               {this.renderAlbum()}
             </View>
         );
     }
